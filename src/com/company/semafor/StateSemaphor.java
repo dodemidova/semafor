@@ -24,7 +24,6 @@ public class StateSemaphor implements Runnable {
         flashGreen = new FlashGreen();
         red = new Red();
         yellow = new Yellow();
-        clear = new Clear();
         state = green;
         oldState = green;
         gm = model;
@@ -101,7 +100,7 @@ public class StateSemaphor implements Runnable {
 
         public FlashGreen() {
             count = 100;
-            colorEnum = TGreenYellowRed;
+            colorEnum = GreenYellowRed;
             counter = 5;
         }
 
@@ -112,8 +111,12 @@ public class StateSemaphor implements Runnable {
         @Override
         public void changeColor() {
             if (counter > 0) {
-                state = clear;
-            } else {
+                if((counter % 2) == 1){
+                    state = flashGreen;
+                }else{
+                    state = green;
+                }
+            }else {
                 state = yellow;
                 reset();
             }
@@ -156,18 +159,5 @@ public class StateSemaphor implements Runnable {
            
         }
 
-    }
-
-    public class Clear extends ChangeColor {
-        public Clear() {
-            count = 100;
-            colorEnum = GreenYellowRed;
-        }
-
-        @Override
-        public void changeColor() {
-            oldState = clear;
-            state = flashGreen;
-        }
     }
 }
